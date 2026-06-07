@@ -47,14 +47,14 @@ export async function getClient(id: number) {
   return prisma.client.findUnique({ where: { id } })
 }
 
-export async function createClient(data: { name: string; email: string; identityCard: string; phone?: string }) {
+export async function createClient(data: { name: string; email: string; identityCard: string; studentId: string; phone?: string }) {
   const client = await prisma.client.create({ data })
   revalidatePath('/clientes')
   revalidatePath('/')
   return client
 }
 
-export async function updateClient(id: number, data: { name: string; email: string; identityCard: string; phone?: string }) {
+export async function updateClient(id: number, data: { name: string; email: string; identityCard: string; studentId: string; phone?: string }) {
   const client = await prisma.client.update({ where: { id }, data })
   revalidatePath('/clientes')
   revalidatePath('/')

@@ -14,6 +14,7 @@ export function ClientForm({ client }: { client?: Client }) {
       name: formData.get('name') as string,
       email: formData.get('email') as string,
       identityCard: formData.get('identityCard') as string,
+      studentId: formData.get('studentId') as string,
       phone: (formData.get('phone') as string) || undefined,
     }
 
@@ -87,6 +88,20 @@ export function ClientForm({ client }: { client?: Client }) {
           className="input-field"
         />
         <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">Opcional</p>
+      </div>
+      <div>
+        <label htmlFor="studentId" className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+          Nº de Estudante
+        </label>
+        <input
+          type="text"
+          name="studentId"
+          id="studentId"
+          required
+          defaultValue={client?.studentId}
+          placeholder="Ex: 2024001"
+          className="input-field"
+        />
       </div>
       <div className="flex items-center gap-3 pt-2">
         <SubmitButton loadingLabel="Salvando...">

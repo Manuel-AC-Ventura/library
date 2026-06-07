@@ -43,6 +43,7 @@ export default async function ClientsPage() {
                 <tr className="table-header">
                   <th className="table-cell text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Nome</th>
                   <th className="table-cell text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Email</th>
+                  <th className="hidden table-cell text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 md:table-cell">Nº Estudante</th>
                   <th className="hidden table-cell text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 md:table-cell">BI</th>
                   <th className="hidden table-cell text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 lg:table-cell">Telefone</th>
                   <th className="hidden table-cell text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 lg:table-cell">Cadastro</th>
@@ -61,6 +62,7 @@ export default async function ClientsPage() {
                       </div>
                     </td>
                     <td className="table-cell text-gray-600 dark:text-gray-400">{client.email}</td>
+                    <td className="hidden table-cell font-mono text-xs text-gray-500 dark:text-gray-400 md:table-cell">{client.studentId}</td>
                     <td className="hidden table-cell font-mono text-xs text-gray-500 dark:text-gray-400 md:table-cell">{client.identityCard}</td>
                     <td className="hidden table-cell text-gray-500 dark:text-gray-400 lg:table-cell">{client.phone || '—'}</td>
                     <td className="hidden table-cell text-gray-500 dark:text-gray-400 lg:table-cell">

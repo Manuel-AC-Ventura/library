@@ -6,19 +6,19 @@ const prisma = new PrismaClient()
 async function main() {
   const clients = await Promise.all([
     prisma.client.create({
-      data: { name: 'Ana Silva', email: 'ana@email.com', identityCard: '000000001LA000', phone: '+244 923 456 789' },
+      data: { name: 'Ana Silva', email: 'ana@email.com', identityCard: '000000001LA000', studentId: '2022001', phone: '+244 923 456 789' },
     }),
     prisma.client.create({
-      data: { name: 'Carlos Souza', email: 'carlos@email.com', identityCard: '000000002LA000', phone: '+244 923 456 790' },
+      data: { name: 'Carlos Souza', email: 'carlos@email.com', identityCard: '000000002LA000', studentId: '2022002', phone: '+244 923 456 790' },
     }),
     prisma.client.create({
-      data: { name: 'Mariana Costa', email: 'mariana@email.com', identityCard: '000000003LA000', phone: '+244 923 456 791' },
+      data: { name: 'Mariana Costa', email: 'mariana@email.com', identityCard: '000000003LA000', studentId: '2022003', phone: '+244 923 456 791' },
     }),
     prisma.client.create({
-      data: { name: 'João Pereira', email: 'joao@email.com', identityCard: '000000004LA000', phone: '+244 923 456 792' },
+      data: { name: 'João Pereira', email: 'joao@email.com', identityCard: '000000004LA000', studentId: '2022004', phone: '+244 923 456 792' },
     }),
     prisma.client.create({
-      data: { name: 'Lucia Oliveira', email: 'lucia@email.com', identityCard: '000000005LA000', phone: '+244 923 456 793' },
+      data: { name: 'Lucia Oliveira', email: 'lucia@email.com', identityCard: '000000005LA000', studentId: '2022005', phone: '+244 923 456 793' },
     }),
   ])
 
