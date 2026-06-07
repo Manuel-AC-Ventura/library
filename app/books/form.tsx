@@ -14,6 +14,7 @@ export function BookForm({ book }: { book?: Book }) {
       title: formData.get('title') as string,
       author: formData.get('author') as string,
       isbn: formData.get('isbn') as string,
+      quantity: parseInt(formData.get('quantity') as string) || 1,
     }
 
     try {
@@ -69,11 +70,25 @@ export function BookForm({ book }: { book?: Book }) {
           id="isbn"
           required
           defaultValue={book?.isbn}
-          placeholder="Ex: 978-85-01-00001-1"
-          className="input-field"
-        />
-      </div>
-      <div className="flex items-center gap-3 pt-2">
+        placeholder="Ex: 978-85-01-00001-1"
+        className="input-field"
+      />
+    </div>
+    <div>
+      <label htmlFor="quantity" className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+        Quantidade em Stock
+      </label>
+      <input
+        type="number"
+        name="quantity"
+        id="quantity"
+        required
+        min="1"
+        defaultValue={book?.quantity ?? 1}
+        className="input-field"
+      />
+    </div>
+    <div className="flex items-center gap-3 pt-2">
         <SubmitButton loadingLabel="Salvando...">
           <Check className="h-4 w-4" />
           {book ? 'Atualizar Livro' : 'Cadastrar Livro'}

@@ -35,7 +35,7 @@ model Book {
   title     String
   author    String
   isbn      String   @unique
-  available Boolean  @default(true)
+  quantity  Int      @default(1)
   coverUrl  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

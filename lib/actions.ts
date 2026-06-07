@@ -5,21 +5,29 @@ import { prisma } from './prisma'
 import type { ReportBook, ReportReader } from './types'
 
 export async function getBooks() {
-  return prisma.book.findMany({ orderBy: { title: 'asc' } })
+  const books = await prisma.book.findMany({
+    include: { _count: { select: { loans: { where: { returnedAt: null } } } } },
+    orderBy: { title: 'asc' },
+  })
+  return books.map((b) => ({ ...b, activeLoans: b._count.loans }))
 }
 
 export async function getBook(id: number) {
-  return prisma.book.findUnique({ where: { id } })
+  const book = await prisma.book.findUnique({
+    where: { id },
+    include: { _count: { select: { loans: { where: { returnedAt: null } } } } },
+  })
+  return book ? { ...book, activeLoans: book._count.loans } : null
 }
 
-export async function createBook(data: { title: string; author: string; isbn: string }) {
+export async function createBook(data: { title: string; author: string; isbn: string; quantity: number }) {
   const book = await prisma.book.create({ data })
   revalidatePath('/books')
   revalidatePath('/')
   return book
 }
 
-export async function updateBook(id: number, data: { title: string; author: string; isbn: string }) {
+export async function updateBook(id: number, data: { title: string; author: string; isbn: string; quantity: number }) {
   const book = await prisma.book.update({ where: { id }, data })
   revalidatePath('/books')
   revalidatePath('/')
@@ -97,9 +105,15 @@ export async function getLoan(id: number) {
 }
 
 export async function borrowBook(clientId: number, bookId: number, dueDate: Date) {
-  const book = await prisma.book.findUnique({ where: { id: bookId } })
-  if (!book || !book.available) {
-    throw new Error('Livro não disponível para empréstimo.')
+  const book = await prisma.book.findUnique({
+    where: { id: bookId },
+    include: { _count: { select: { loans: { where: { returnedAt: null } } } } },
+  })
+  if (!book) {
+    throw new Error('Livro não encontrado.')
+  }
+  if (book._count.loans >= book.quantity) {
+    throw new Error('Nenhum exemplar disponível para empréstimo.')
   }
 
   const loan = await prisma.loan.create({
@@ -108,11 +122,6 @@ export async function borrowBook(clientId: number, bookId: number, dueDate: Date
       bookId,
       dueDate,
     },
-  })
-
-  await prisma.book.update({
-    where: { id: bookId },
-    data: { available: false },
   })
 
   revalidatePath('/loans')
@@ -125,11 +134,6 @@ export async function returnBook(loanId: number, bookId: number) {
   await prisma.loan.update({
     where: { id: loanId },
     data: { returnedAt: new Date() },
-  })
-
-  await prisma.book.update({
-    where: { id: bookId },
-    data: { available: true },
   })
 
   revalidatePath('/loans')

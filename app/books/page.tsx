@@ -44,6 +44,7 @@ export default async function BooksPage() {
                   <th className="table-cell text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Título</th>
                   <th className="table-cell text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Autor</th>
                   <th className="hidden table-cell text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 sm:table-cell">ISBN</th>
+                  <th className="table-cell text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Stock</th>
                   <th className="table-cell text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Status</th>
                   <th className="table-cell text-right text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Ações</th>
                 </tr>
@@ -59,11 +60,14 @@ export default async function BooksPage() {
                     </td>
                     <td className="table-cell text-gray-600 dark:text-gray-400">{book.author}</td>
                     <td className="hidden table-cell font-mono text-xs text-gray-400 dark:text-gray-500 sm:table-cell">{book.isbn}</td>
+                    <td className="table-cell text-gray-600 dark:text-gray-400">
+                      {(book as any).activeLoans ?? 0}/{book.quantity}
+                    </td>
                     <td className="table-cell">
-                      {book.available ? (
+                      {((book as any).activeLoans ?? 0) < book.quantity ? (
                         <span className="badge-green">Disponível</span>
                       ) : (
-                        <span className="badge-amber">Emprestado</span>
+                        <span className="badge-amber">Esgotado</span>
                       )}
                     </td>
                     <td className="table-cell text-right">

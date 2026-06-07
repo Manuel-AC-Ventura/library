@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic'
 
 export default async function NewLoanPage() {
   const [clients, books] = await Promise.all([getClients(), getBooks()])
-  const availableBooks = books.filter((b) => b.available)
+  const availableBooks = books.filter((b) => (b as any).activeLoans < b.quantity)
 
   return (
     <div>

@@ -24,28 +24,28 @@ async function main() {
 
   const books = await Promise.all([
     prisma.book.create({
-      data: { title: 'Dom Casmurro', author: 'Machado de Assis', isbn: '978-85-01-00001-1' },
+      data: { title: 'Dom Casmurro', author: 'Machado de Assis', isbn: '978-85-01-00001-1', quantity: 3 },
     }),
     prisma.book.create({
-      data: { title: 'Grande Sertão: Veredas', author: 'Guimarães Rosa', isbn: '978-85-01-00002-8' },
+      data: { title: 'Grande Sertão: Veredas', author: 'Guimarães Rosa', isbn: '978-85-01-00002-8', quantity: 2 },
     }),
     prisma.book.create({
-      data: { title: 'Capitães da Areia', author: 'Jorge Amado', isbn: '978-85-01-00003-5' },
+      data: { title: 'Capitães da Areia', author: 'Jorge Amado', isbn: '978-85-01-00003-5', quantity: 2 },
     }),
     prisma.book.create({
-      data: { title: 'A Hora da Estrela', author: 'Clarice Lispector', isbn: '978-85-01-00004-2' },
+      data: { title: 'A Hora da Estrela', author: 'Clarice Lispector', isbn: '978-85-01-00004-2', quantity: 1 },
     }),
     prisma.book.create({
-      data: { title: 'Memórias Póstumas de Brás Cubas', author: 'Machado de Assis', isbn: '978-85-01-00005-9' },
+      data: { title: 'Memórias Póstumas de Brás Cubas', author: 'Machado de Assis', isbn: '978-85-01-00005-9', quantity: 2 },
     }),
     prisma.book.create({
-      data: { title: 'O Alienista', author: 'Machado de Assis', isbn: '978-85-01-00006-6' },
+      data: { title: 'O Alienista', author: 'Machado de Assis', isbn: '978-85-01-00006-6', quantity: 1 },
     }),
     prisma.book.create({
-      data: { title: 'Vidas Secas', author: 'Graciliano Ramos', isbn: '978-85-01-00007-3' },
+      data: { title: 'Vidas Secas', author: 'Graciliano Ramos', isbn: '978-85-01-00007-3', quantity: 1 },
     }),
     prisma.book.create({
-      data: { title: 'Iracema', author: 'José de Alencar', isbn: '978-85-01-00008-0' },
+      data: { title: 'Iracema', author: 'José de Alencar', isbn: '978-85-01-00008-0', quantity: 1 },
     }),
   ])
 
