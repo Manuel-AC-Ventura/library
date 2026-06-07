@@ -78,9 +78,6 @@ export default function LoginPage() {
           </form>
         </div>
 
-        <p className="mt-4 text-center text-xs text-gray-400 dark:text-gray-500">
-          Email: admin@biblioteca.com / Senha: admin123
-        </p>
       </div>
     </div>
   )
