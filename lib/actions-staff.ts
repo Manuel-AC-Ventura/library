@@ -22,9 +22,19 @@ export async function logoutAction() {
   await authLogout()
 }
 
-export async function getStaffList() {
+export async function getStaffList(query?: string) {
   await requireAuth()
+  const where = query
+    ? {
+        OR: [
+          { name: { contains: query, mode: 'insensitive' as const } },
+          { email: { contains: query, mode: 'insensitive' as const } },
+        ],
+      }
+    : {}
+
   return prisma.staff.findMany({
+    where,
     select: { id: true, name: true, email: true, role: true, createdAt: true },
     orderBy: { name: 'asc' },
   })

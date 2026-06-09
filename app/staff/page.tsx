@@ -2,12 +2,18 @@ import Link from 'next/link'
 import { getStaffList } from '@/lib/actions-staff'
 import { StaffDeleteButton } from './delete-button'
 import { PageHeader } from '@/components/page-header'
+import { SearchInput } from '@/components/search-input'
 import { UserPlus, Users, Shield, ShieldOff, Edit3 } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
-export default async function StaffPage() {
-  const staff = await getStaffList()
+export default async function StaffPage({
+  searchParams,
+}: {
+  searchParams: { q?: string }
+}) {
+  const q = searchParams.q
+  const staff = await getStaffList(q)
 
   return (
     <div>
@@ -21,6 +27,10 @@ export default async function StaffPage() {
           </Link>
         }
       />
+
+      <div className="mb-6">
+        <SearchInput placeholder="Buscar por nome ou email..." />
+      </div>
 
       <div className="card overflow-hidden">
         <div className="overflow-x-auto">

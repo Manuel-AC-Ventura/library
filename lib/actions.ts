@@ -4,8 +4,19 @@ import { revalidatePath } from 'next/cache'
 import { prisma } from './prisma'
 import type { ReportBook, ReportReader } from './types'
 
-export async function getBooks() {
+export async function getBooks(query?: string) {
+  const where = query
+    ? {
+        OR: [
+          { title: { contains: query, mode: 'insensitive' as const } },
+          { author: { contains: query, mode: 'insensitive' as const } },
+          { isbn: { contains: query, mode: 'insensitive' as const } },
+        ],
+      }
+    : {}
+
   const books = await prisma.book.findMany({
+    where,
     include: { _count: { select: { loans: { where: { returnedAt: null } } } } },
     orderBy: { title: 'asc' },
   })
@@ -47,8 +58,19 @@ export async function deleteBook(id: number) {
   revalidatePath('/')
 }
 
-export async function getClients() {
-  return prisma.client.findMany({ orderBy: { name: 'asc' } })
+export async function getClients(query?: string) {
+  const where = query
+    ? {
+        OR: [
+          { name: { contains: query, mode: 'insensitive' as const } },
+          { email: { contains: query, mode: 'insensitive' as const } },
+          { identityCard: { contains: query, mode: 'insensitive' as const } },
+          { studentId: { contains: query, mode: 'insensitive' as const } },
+        ],
+      }
+    : {}
+
+  return prisma.client.findMany({ where, orderBy: { name: 'asc' } })
 }
 
 export async function getClient(id: number) {
@@ -82,8 +104,27 @@ export async function deleteClient(id: number) {
   revalidatePath('/')
 }
 
-export async function getLoans() {
+export async function getLoans(query?: string, status?: string) {
+  const where: Record<string, unknown> = {}
+
+  if (query) {
+    where.OR = [
+      { book: { title: { contains: query, mode: 'insensitive' } } },
+      { client: { name: { contains: query, mode: 'insensitive' } } },
+    ]
+  }
+
+  if (status === 'active') {
+    where.returnedAt = null
+  } else if (status === 'returned') {
+    where.returnedAt = { not: null }
+  } else if (status === 'overdue') {
+    where.returnedAt = null
+    where.dueDate = { lt: new Date() }
+  }
+
   return prisma.loan.findMany({
+    where,
     include: { client: true, book: true },
     orderBy: { borrowedAt: 'desc' },
   })

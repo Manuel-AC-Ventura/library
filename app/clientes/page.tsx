@@ -4,12 +4,18 @@ import { deleteClient } from '@/lib/actions'
 import { DeleteButtonForm } from '@/components/delete-button'
 import { PageHeader } from '@/components/page-header'
 import { EmptyState } from '@/components/empty-state'
+import { SearchInput } from '@/components/search-input'
 import { UserPlus, UsersIcon, Edit3, UserX } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
-export default async function ClientsPage() {
-  const clients = await getClients()
+export default async function ClientsPage({
+  searchParams,
+}: {
+  searchParams: { q?: string }
+}) {
+  const q = searchParams.q
+  const clients = await getClients(q)
 
   return (
     <div>
@@ -23,6 +29,10 @@ export default async function ClientsPage() {
           </Link>
         }
       />
+
+      <div className="mb-6">
+        <SearchInput placeholder="Buscar por nome, email, BI ou nº estudante..." />
+      </div>
 
       {clients.length === 0 ? (
         <EmptyState

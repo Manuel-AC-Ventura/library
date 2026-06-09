@@ -4,12 +4,18 @@ import { deleteBook } from '@/lib/actions'
 import { DeleteButtonForm } from '@/components/delete-button'
 import { PageHeader } from '@/components/page-header'
 import { EmptyState } from '@/components/empty-state'
+import { SearchInput } from '@/components/search-input'
 import { BookOpen, Plus, BookX, Edit3 } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
-export default async function BooksPage() {
-  const books = await getBooks()
+export default async function BooksPage({
+  searchParams,
+}: {
+  searchParams: { q?: string }
+}) {
+  const q = searchParams.q
+  const books = await getBooks(q)
 
   return (
     <div>
@@ -23,6 +29,10 @@ export default async function BooksPage() {
           </Link>
         }
       />
+
+      <div className="mb-6">
+        <SearchInput placeholder="Buscar por título, autor ou ISBN..." />
+      </div>
 
       {books.length === 0 ? (
         <EmptyState

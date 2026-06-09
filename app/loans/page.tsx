@@ -3,12 +3,20 @@ import { getLoans } from '@/lib/actions'
 import { ReturnButton } from './return-button'
 import { PageHeader } from '@/components/page-header'
 import { EmptyState } from '@/components/empty-state'
+import { SearchInput } from '@/components/search-input'
+import { StatusFilter } from '@/components/status-filter'
 import { Plus, CalendarRange, BookOpen } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
-export default async function LoansPage() {
-  const loans = await getLoans()
+export default async function LoansPage({
+  searchParams,
+}: {
+  searchParams: { q?: string; status?: string }
+}) {
+  const q = searchParams.q
+  const status = searchParams.status
+  const loans = await getLoans(q, status)
 
   return (
     <div>
@@ -22,6 +30,20 @@ export default async function LoansPage() {
           </Link>
         }
       />
+
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div className="flex-1">
+          <SearchInput placeholder="Buscar por livro ou cliente..." />
+        </div>
+        <StatusFilter
+          options={[
+            { value: 'all', label: 'Todos' },
+            { value: 'active', label: 'Ativos' },
+            { value: 'returned', label: 'Devolvidos' },
+            { value: 'overdue', label: 'Atrasados' },
+          ]}
+        />
+      </div>
 
       {loans.length === 0 ? (
         <EmptyState
